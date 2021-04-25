@@ -1,0 +1,11 @@
+/__pycache__
+/.vscode
+/venv
+/interfazVieja.pyw
+/datos_de_deuda.xlsx
+/Deuda.txt
+/output.xlsx
+/data
+/txt_con_formato.txt
+/test.txt
+/test.py
