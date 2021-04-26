@@ -38,28 +38,31 @@
                     <input name="direccion-input" id="direccion-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="Dirección" />
                     <br/>
                     <label id="tel" class="label-datos" for="tel-input">Número de contacto </label>
-                    <input name="tel-input" id="tel-input" value="" type="text" class="form-control col-md-6 input-datos-personales" placeholder="Número de contacto" />
+                    <input name="tel-input" id="tel-input" value="" type="text" class="form-control col-md-3 input-datos-personales" placeholder="Número de contacto" />
                 </section>
                 <hr />
                 <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
                     <h3>Datos asistencia</h3>
                     <label class="label-datos" >Sede: *</label>
                     <fieldset class="col-md-6">
-                        <select class="form-control"  onchange="actualizarEdificiosYActividadesEnSede();" id="sede">
+                        <select class="form-control"  onchange="actualizarEdificiosYActividadesEnSede();" name="sede" id="sede" required>
                             <option disabled selected>Seleccione una opción </option>
                         </select>
                     </fieldset>
                     <br/>
+                    <label class="label-datos" >Fecha: *</label>
+                    <input name="fecha-input" id="fecha-input" value="" type="date" class="form-control col-md-6 input-datos-personales" onchange="actualizarEdificiosYActividadesEnSede();" required placeholder="Fecha" />
+                    <br/>
                     <label class="label-datos" >Edificio: *</label>
                     <fieldset class="col-md-6">
-                        <select class="form-control" id="edificio">
+                        <select class="form-control" onchange="ActualizarActividadesPorEdificio();" name="edificio" id="edificio" required>
                             <option disabled selected>Seleccione una opción </option>
                         </select>
                     </fieldset>
                     <br/>
                     <label class="label-datos" >Actividad: *</label>
                     <fieldset class="col-md-6">
-                        <select class="form-control" onchange="actualizarEdificiosPorActividad();" id="actividad">
+                        <select class="form-control" onchange="actualizarEdificiosPorActividad();" name="actividad" id="actividad" required>
                             <option disabled selected>Seleccione una opción </option>
                         </select>
                     </fieldset>
@@ -67,31 +70,31 @@
                 <hr/>
                 <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
                     <h3>Autoevaluación COVID-19</h3>
-                    <fieldset class="row">
+                    <fieldset class="row" required>
                         <p class="col-md-6">¿Percibiste una marcada pérdida del olfato de manera repentina?</p>
                         <label class="col-md-1" for="pregunta1a"> <input value="1" type="radio" name="olfato" id="pregunta1a" /> Si </label>
                         <label class="col-md-1" for="pregunta1b"> <input value="0" type="radio" name="olfato" id="pregunta1b" /> No </label>
                     </fieldset>
                     <br/>
-                    <fieldset class="row">
+                    <fieldset class="row" required>
                         <p class="col-md-6">¿Percibiste una marcada pérdida del gusto de manera repentina?</p>
                         <label class="col-md-1" for="pregunta2a"> <input value="1" type="radio" name="gusto" id="pregunta2a" /> Si </label>
                         <label class="col-md-1" for="pregunta2b"> <input value="0" type="radio" name="gusto" id="pregunta2b" /> No </label>
                     </fieldset>
                     <br/>
-                    <fieldset class="row">
+                    <fieldset class="row" required>
                         <p class="col-md-6">¿Tenés tos?</p>
                         <label class="col-md-1" for="pregunta3a"> <input value="1" type="radio" name="tos" id="pregunta3a" /> Si </label>
                         <label class="col-md-1" for="pregunta3b"> <input value="0" type="radio" name="tos" id="pregunta3b" /> No </label>
                     </fieldset>
                     <br/>
-                    <fieldset class="row">
+                    <fieldset class="row" required>
                         <p class="col-md-6">¿Tenés dolor de garganta?</p>
                         <label class="col-md-1" for="pregunta4a"> <input value="1" type="radio" name="garganta" id="pregunta4a" /> Si </label>
                         <label class="col-md-1" for="pregunta4b"> <input value="0" type="radio" name="garganta" id="pregunta4b" /> No </label>
                     </fieldset>
                     <br/>
-                    <fieldset class="row">
+                    <fieldset class="row" required>
                         <p class="col-md-6">¿Tenés dificultad respiratoria o falta de aire?</p>
                         <label class="col-md-1" for="pregunta5a"> <input value="1" type="radio" name="aire" id="pregunta5a" /> Si </label>
                         <label class="col-md-1" for="pregunta5b"> <input value="0" type="radio" name="aire" id="pregunta5b" /> No </label>
@@ -100,7 +103,7 @@
                     <br/>
                     <h5 id="declaracion-jurada-label">Si tu situación de salud contempla alguna de las siguientes opciones, marque las que correspondan:</h5>
                     <br/>
-                    <div class="form-check">
+                    <div class="form-check" required>
                         <input name="emabarazadaCheck" class="form-check-input" type="checkbox" value="emabarazadaCheck" id="defaultCheck1">
                         <label class="form-check-label" for="defaultCheck1">Estoy embarazada</label>
                     </div>
@@ -162,16 +165,24 @@
                 return content;
             }
 
-            function actualizarOpcionesNombre(opcion, i, id,idBDD,idSede, idEdificio, idAula){
+            function agregarOpcionSeleccionarVacio(nombre, value, selectID){
+                var nuevaOpcion = new Option(nombre, value);
+
+                nuevaOpcion.setAttribute("disabled", true);
+                nuevaOpcion.setAttribute("selected", true);
+
+                $(nuevaOpcion).html(nombre);
+
+                $(selectID).append(nuevaOpcion);
+                
+            }
+
+            function actualizarOpcionesNombre(opcion, i, id,idBDD){
                 var nombreNuevaOpcion = opcion[i]["nombre"];
                 var nuevaOpcion = new Option(nombreNuevaOpcion, i.toString());
 
                 // para armar el "path"
                 nuevaOpcion.setAttribute("id",idBDD);
-                nuevaOpcion.setAttribute("data-idsede",idSede);
-                nuevaOpcion.setAttribute("data-idedificio",idEdificio);
-                nuevaOpcion.setAttribute("data-idaula",idAula);
-
 
                 $(nuevaOpcion).html(nombreNuevaOpcion);
 
@@ -185,58 +196,68 @@
                 var selectBox = document.getElementById("sede");
                 var sedeNumero = selectBox.options[selectBox.selectedIndex].value;
 
+                if(sedes[sedeNumero]== void(0))
+                    return;
+
                 $('#edificio').children().remove().end();
                 $('#actividad').children().remove().end();
                 
+                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#actividad");
+                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#edificio");
                 // recorro los edificios
                 edificios = sedes[sedeNumero]["edificios"];
                 
 
                 // actualizo los edificios
                 for(edificioNumero = 0; edificioNumero < edificios.length; edificioNumero++){
-                    actualizarOpcionesNombre(edificios, edificioNumero, "#edificio", edificios[edificioNumero]["idEdificio"], sedeNumero,edificioNumero, -1);
+                    actualizarOpcionesNombre(edificios, edificioNumero, "#edificio", edificios[edificioNumero]["idEdificio"]);
                     aulas = edificios[edificioNumero]["aulas"];
                     for(aulaNumero = 0; aulaNumero < aulas.length; aulaNumero++){
                         actividades = aulas[aulaNumero]["actividads"];
                         for(actividadNumero = 0; actividadNumero < actividades.length; actividadNumero++){
-                            actualizarOpcionesNombre(actividades, actividadNumero, "#actividad", actividades[actividadNumero]["idActividad"], sedeNumero,edificioNumero,aulaNumero);
+                            if(controlFecha(actividades, actividadNumero))
+                                actualizarOpcionesNombre(actividades, actividadNumero, "#actividad", actividades[actividadNumero]["idActividad"]);
                         }
                         
                     }
                 }
             }
 
+
             function actualizarEdificiosPorActividad(){
                 var selectBox = document.getElementById("actividad");
                 var actividadValue = selectBox.options[selectBox.selectedIndex].id;
 
-                $('#edificio').children().remove().end();
+                //$('#edificio').children().remove().end();
 
                 sedes = datos["data"];
 
-                console.log("buscando");
+                //console.log("buscando");
 
                 // recorro las sedes 
                 for (sedeNumero = 0; sedeNumero < sedes.length; sedeNumero++){
-                    console.log("sedeNombre:" + sedes[sedeNumero]["nombre"]);
+                    //console.log("sedeNombre:" + sedes[sedeNumero]["nombre"]);
                     edificios = sedes[sedeNumero]["edificios"];
                     
                     // actualizo los edificios
                     for(edificioNumero = 0; edificioNumero < edificios.length; edificioNumero++){
-                        console.log("edificio:" + edificios[edificioNumero]["nombre"]);
+                        //console.log("edificio:" + edificios[edificioNumero]["nombre"]);
                         aulas = edificios[edificioNumero]["aulas"];
                         // actualizo las uulas
                         for(aulaNumero = 0; aulaNumero < aulas.length; aulaNumero++){
                             actividades = aulas[aulaNumero]["actividads"];
-                            console.log("aula:" + edificios[aulaNumero]["nombre"] + "-" + actividades.length);
+                            //console.log("aula:" + edificios[aulaNumero]["nombre"] + "-" + actividades.length);
                             for(activadesNumero = 0; activadesNumero< actividades.length; activadesNumero++){
-                                console.log("actividad:" + actividades[activadesNumero]["nombre"]);
+                               // console.log("actividad:" + actividades[activadesNumero]["nombre"]);
                                 if(actividades[activadesNumero]["idActividad"] == actividadValue){
-                                    actualizarOpcionesNombre(edificios, edificioNumero, "#edificio", "edificio", sedeNumero,edificioNumero, -1);
+                                    //actualizarOpcionesNombre(edificios, edificioNumero, "#edificio", edificios[edificioNumero]["idEdificio"]);
+                                    for(i = 0; i < edificios.length; i++){
+                                        $("#edificio > option[id="+ edificios[i]["idEdificio"] +"]").attr("selected",false);
+                                    }
+
+                                    
+                                    $("#edificio > option[id="+ edificios[edificioNumero]["idEdificio"] +"]").attr("selected",true);
                                     return;
-                                }
-                                else{
-                                    console.log(actividades[activadesNumero]["idActividad"]+"!=" + actividadValue);
                                 }
                             }
                         }
@@ -245,6 +266,33 @@
                 console.log("No se encontró ese");
             }
 
+            function controlFecha(actividades, actividadNumero){
+                var fecha = document.getElementById("fecha-input");
+                fechaValue = fecha.value;
+                return (fechaValue == actividades[actividadNumero]["fechaInicio"]);
+            }
+
+            function ActualizarActividadesPorEdificio(){
+                var selectBox = document.getElementById("edificio");
+                var edificioNumero = selectBox.options[selectBox.selectedIndex].value;
+
+                $('#actividad').children().remove().end();
+                
+                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#actividad");
+                // recorro los edificios
+               
+                aulas = edificios[edificioNumero]["aulas"];
+                for(aulaNumero = 0; aulaNumero < aulas.length; aulaNumero++){
+                    actividades = aulas[aulaNumero]["actividads"];
+                    for(actividadNumero = 0; actividadNumero < actividades.length; actividadNumero++){
+                        if(controlFecha(actividades, actividadNumero))
+                            actualizarOpcionesNombre(actividades, actividadNumero, "#actividad", actividades[actividadNumero]["idActividad"]);
+                    }
+                    
+                }
+            }
+
+
             function ActualizarSedes(){
 
                 sedes = datos["data"];
@@ -252,7 +300,7 @@
                 // recorro las sedes 
                 for (sedeNumero = 0; sedeNumero < sedes.length; sedeNumero++){
                     // actualizo las sedes disponibles
-                    actualizarOpcionesNombre(sedes, sedeNumero, "#sede", sedes[sedeNumero]["idSede"],sedeNumero,-1,-1);
+                    actualizarOpcionesNombre(sedes, sedeNumero, "#sede", sedes[sedeNumero]["idSede"]);
                 }
                   
             }

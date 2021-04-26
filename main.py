@@ -31,6 +31,11 @@ def guardarActividades():
         json.dump(response_dict, file, indent=4)
 
 
+@app.route('/error', methods=['GET', 'POST'])
+def error():
+    if request.method == 'POST':
+        return redirect("/")
+    return render_template("Error.html")
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -43,16 +48,42 @@ def upload_file():
         email = request.form['email-input']
         direccion = request.form['direccion-input']
         tel = request.form['tel-input']
-        # declaracion jurada
+        # datos de ingreso
+        sede = request.form.get('sede')
+        fecha = request.form['fecha-input']
+        edificio = request.form.get('edificio')
+        actividad = request.form.get('actividad')
+
+        if(sede == None or edificio == None or actividad == None):
+            return redirect("/error")
+
+
+        # declaracion jurada 1era parte
         olfato = request.form['olfato']
         gusto = request.form['gusto']
         tos = request.form['tos']
         garganta = request.form['garganta']
         aire = request.form['aire']
 
+        # declaracion jurada 2da parte
+        embarazada = request.form.get('emabarazadaCheck')
+        cancer = request.form.get('cancerCheck')
+        diabetes = request.form.get('diabetesCheck')
+        hepatica = request.form.get('hepaticaCheck')
+        renal = request.form.get('renalCheck')
+        respiratoria = request.form.get('respiratoriaCheck')
+        cardiologica = request.form.get('cardiologicaCheck')
+
+        array = [nombre, dni, email,direccion,tel,sede,fecha,edificio,actividad,olfato,gusto,tos,garganta,aire,embarazada,cancer,diabetes,hepatica,renal,respiratoria,cardiologica]
+
+        salida = "<ul>"
+        for i in array:
+            salida+= "<li>" + str(i) + "</li>"
+        
+        salida += "</ul>"
 
 
-        return "<ul><li>nombre: "+ nombre +"<li/><li>dni: "+ dni +"<li/><li>email: "+ email +"<li/><li>direccion: "+ direccion +"<li/><li>telefono: "+ tel +"<li/></ul> <br/><ul><li>olfato: "+ olfato +"<li/><li>gusto: "+ gusto +"<li/><li>tos: "+ tos +"<li/><li>garganta: "+ garganta +"<li/><li>aire: "+ aire +"<li/></ul>"
+        return salida
 
 
 
