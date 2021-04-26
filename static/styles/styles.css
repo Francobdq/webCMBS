@@ -8,12 +8,15 @@
 
 :root {
     /* cambiando estos colores cambia toda la pagina*/
-    
-    --color-claro: #6E37A4/*rgba(233, 191, 124, 0.9)*/;
-    --color-medio:  #663399/* #e6b570*/;
-    --color-oscuro:#4F2877/*#d19e57 */;
-    --color-oscurox2:  #422163/*#c79144*/;
-    --color-texto: white;
+    --color-fondo: #18363d;
+    --color-cuadrado:#265661;
+    --color-textos: white;
+
+
+    --color-claro: black;/*rgba(233, 191, 124, 0.9)*/;
+    --color-medio:   var(--color-cuadrado);
+    --color-oscurox2:  var(--color-fondo)/*#c79144*/;
+    --color-texto: var(--color-textos);
 
     --color-sombra1: rgba(112, 139, 168, 0.25);
     --color-borde: #80bdff;
@@ -82,21 +85,7 @@ h1:focus {
     border-style: none;
 }
 
-#pregunta14,
-#pregunta15,
-#pregunta16 {
-    background-color:var(--color-claro);
-    border-radius: 10px;
-    border-style: none;
-}
-
-#h3-comentarios {
-    text-shadow: 2px 2px 3px var(--color-oscuro);
-    color: var(--color-texto)
-}
-
 input {
-    background-color:var(--color-claro);
     border-style: none;
 }
 
@@ -111,7 +100,7 @@ input {
         margin-top: 1rem;
     }
     .input-datos-personales {
-        width: 60%;
+        width: 100%;
     }
 }
 
@@ -127,7 +116,7 @@ input {
         margin-top: 1rem;
     }
     .input-datos-personales  {
-        width: 60%;
+        width: 100%;
     }
 }
 
