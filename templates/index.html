@@ -66,6 +66,13 @@
                             <option disabled selected>Seleccione una opción </option>
                         </select>
                     </fieldset>
+                    <br/>
+                    <label class="label-datos" >Horario: *</label>
+                    <fieldset class="col-md-6">
+                        <select class="form-control" onchange="" name="horarioActividad" id="horarioActividad" required>
+                            <option disabled selected>Seleccione una opción </option>
+                        </select>
+                    </fieldset>
                 </section>
                 <hr/>
                 <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
@@ -224,6 +231,11 @@
                 }
             }
 
+            function actualizarHorariosActividad(horariosactividads){
+                for(i = 0; i < horariosactividads.length; i++){
+                    actualizarOpcionesNombre(horariosactividads, i, "#horarioActividad",horariosactividads[i]["idHorarioActividad"] )
+                }
+            }
 
             function actualizarEdificiosPorActividad(){
                 var selectBox = document.getElementById("actividad");
@@ -261,6 +273,8 @@
 
                                     
                                     $("#edificio > option[id="+ edificios[edificioNumero]["idEdificio"] +"]").attr("selected",true);
+                                    horariosactividads = actividades[actividadNumero]["horariosactividads"];
+                                    actualizarHorariosActividad(horariosactividads);
                                     return;
                                 }
                                 else{
