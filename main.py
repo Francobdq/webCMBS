@@ -38,6 +38,20 @@ def error():
     return render_template("Error.html")
 
 
+    
+def arrobasEntreMedio(arrregloDeStringsAArrobar):
+    salida = ""
+    for i in arrregloDeStringsAArrobar:
+        salida += str(i)+"@"
+
+    salida = str(salida[:-1])
+    return salida
+
+    
+
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     #guardarActividades()
@@ -76,14 +90,9 @@ def upload_file():
 
         array = [nombre, dni, email,direccion,tel,sede,fecha,edificio,actividad,olfato,gusto,tos,garganta,aire,embarazada,cancer,diabetes,hepatica,renal,respiratoria,cardiologica]
 
-        salida = "<ul>"
-        for i in array:
-            salida+= "<li>" + str(i) + "</li>"
-        
-        salida += "</ul>"
+        textoAArrobar = [dni, nombre, email,direccion,tel,sede,edificio,actividad,fecha]
 
-
-        return salida
+        return redirect("http://jccolazo.hopto.org:8080/api/qr?texto="+arrobasEntreMedio(textoAArrobar), code=302)
 
 
 
