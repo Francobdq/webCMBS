@@ -179,10 +179,10 @@
 
             function actualizarOpcionesNombre(opcion, i, id,idBDD){
                 var nombreNuevaOpcion = opcion[i]["nombre"];
-                var nuevaOpcion = new Option(nombreNuevaOpcion, i.toString());
+                var nuevaOpcion = new Option(nombreNuevaOpcion, idBDD.toString());
 
                 // para armar el "path"
-                nuevaOpcion.setAttribute("id",idBDD);
+                nuevaOpcion.setAttribute("id",i);
 
                 $(nuevaOpcion).html(nombreNuevaOpcion);
 
@@ -194,7 +194,7 @@
             
             function actualizarEdificiosYActividadesEnSede(){
                 var selectBox = document.getElementById("sede");
-                var sedeNumero = selectBox.options[selectBox.selectedIndex].value;
+                var sedeNumero = selectBox.options[selectBox.selectedIndex].id;
 
                 if(sedes[sedeNumero]== void(0))
                     return;
@@ -217,6 +217,7 @@
                         for(actividadNumero = 0; actividadNumero < actividades.length; actividadNumero++){
                             if(controlFecha(actividades, actividadNumero))
                                 actualizarOpcionesNombre(actividades, actividadNumero, "#actividad", actividades[actividadNumero]["idActividad"]);
+                        
                         }
                         
                     }
@@ -226,9 +227,12 @@
 
             function actualizarEdificiosPorActividad(){
                 var selectBox = document.getElementById("actividad");
-                var actividadValue = selectBox.options[selectBox.selectedIndex].id;
+                var actividadValue = selectBox.options[selectBox.selectedIndex].value;
 
-                //$('#edificio').children().remove().end();
+                //$('#edificio').children().remove().end(); 
+                // en el value yo guardo el id 
+                // en el id guardo el value
+                // en json: el id es unico pero el value es para el array
 
                 sedes = datos["data"];
 
@@ -259,6 +263,9 @@
                                     $("#edificio > option[id="+ edificios[edificioNumero]["idEdificio"] +"]").attr("selected",true);
                                     return;
                                 }
+                                else{
+                                    console.log(actividades[activadesNumero]["idActividad"] + " != " + actividadValue);
+                                }
                             }
                         }
                     }
@@ -274,7 +281,7 @@
 
             function ActualizarActividadesPorEdificio(){
                 var selectBox = document.getElementById("edificio");
-                var edificioNumero = selectBox.options[selectBox.selectedIndex].value;
+                var edificioNumero = selectBox.options[selectBox.selectedIndex].id;
 
                 $('#actividad').children().remove().end();
                 
