@@ -38,16 +38,7 @@ def error():
     return render_template("Error.html")
 
 
-    
-def arrobasEntreMedio(arrregloDeStringsAArrobar):
-    salida = ""
-    for i in arrregloDeStringsAArrobar:
-        salida += str(i)+"@"
 
-    salida = str(salida[:-1])
-    return salida
-
-    
 
 
 
@@ -67,10 +58,10 @@ def upload_file():
         fecha = request.form['fecha-input']
         edificio = request.form.get('edificio')
         actividad = request.form.get('actividad')
+        horario = request.form['horarioActividad']
 
         if(sede == None or edificio == None or actividad == None):
             return redirect("/error")
-
 
         # declaracion jurada 1era parte
         olfato = request.form['olfato']
@@ -88,11 +79,19 @@ def upload_file():
         respiratoria = request.form.get('respiratoriaCheck')
         cardiologica = request.form.get('cardiologicaCheck')
 
-        array = [nombre, dni, email,direccion,tel,sede,fecha,edificio,actividad,olfato,gusto,tos,garganta,aire,embarazada,cancer,diabetes,hepatica,renal,respiratoria,cardiologica]
+        grupoDeRiesgo = 0
+        if (embarazada or cancer or diabetes or hepatica or renal or respiratoria or cardiologica):
+            grupoDeRiesgo = 1
 
-        textoAArrobar = [dni, nombre, email,direccion,tel,sede,edificio,actividad,fecha]
 
-        return redirect("http://jccolazo.hopto.org:8080/api/qr?texto="+arrobasEntreMedio(textoAArrobar), code=302)
+        auth_data = {"dni": str(dni),"enSeguimiento": str(1),"grupoDeRiesgo": str(grupoDeRiesgo),"mail": str(email),"nombre": str(nombre),"telefono": str(tel)}
+        
+        resp = requests.post('http://areco.gob.ar:9528/api/ingresante/create/'+str(horario)+'/?fechaingreso='+str(fecha), json=auth_data)
+
+        logging.debug(resp)
+
+
+        return render_template("qr.html", qr=resp) 
 
 
 
