@@ -1,39 +1,65 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="en">
+<head>
+  <title>Imagen QR</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+      .center,img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-        <style>
-            .text{
-                color: white;
-            }
+        .centrado{
+            margin-left: auto;
+            margin-right: auto;
+        }
+  </style>
+</head>
+<body>
 
+<div class="container sample" id="sample">
+    <header class="col-md-12">
+        <h2 class="text-center" tabindex="0">Imagen QR</h2>
+    </header>
+    <section class="seccion-container">
+        </br>
+        <img class="text-center" src="{{ qrcode(qr) }}">
+        </br>
+        <div class="text-center centrado">
+            <h5 class="text col-md-12" >Guarda el siguiente QR (se presentará el día en el que ingreses)<h5>
+            <h5 class="text col-md-12">Nombre: <b>{{nombre}}</b><h5>
+            <h5 class="text col-md-12">Edificio: <b>{{edificio}}</b><h5>
+            <h5 class="text col-md-12">Sede: <b>{{sede}}</b><h5>
+            <h5 class="text col-md-12">Fecha: <b>{{fecha}}</b><h5>
+            <h5 class="text col-md-12">Hora: <b>{{hora}}</b><h5>
+        </div>
+    </section>
+    
+</div>
+<section class="container">
+    <form id="form1" runat='server'>
+        <button type="submit" class="btn btn-primary mb-2 center" onclick="javascript:printDiv('sample')">Descargar/Imprimir QR</button>  
+    </form> 
+</section>
+</body>
+<script language="javascript" type="text/javascript"> 
+    function printDiv(divID)  
+    { 
+        var divElements = document.getElementById(divID).innerHTML; 
+        var oldPage = document.body.innerHTML; 
 
-            img {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-            }
+        document.body.innerHTML =  
+          "<html><head><title></title></head><body>" +  
+          divElements + "</body>"; 
 
-            
+        window.print(); 
 
-        </style>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-        <link rel="stylesheet" href="styles.css" />
-    </head>
-    <body>
-        <h1 class="text-center" tabindex="0">Imagen QR</h1>
-        <section class="container">  
-            <section class="seccion-container">
-                <h3 class="text">Presenta este QR en la universidad para obtener acceso el día en el que hayas solicitado el turno.</h3>
-                <img class = "center" src="http://jccolazo.hopto.org:8080/api/qr?texto="{{qr}}>
-            </section>
-            
-        </section>
-        
-
-
-    </body>
+        document.body.innerHTML = oldPage; 
+    } 
+</script>
 </html>
-       
-          

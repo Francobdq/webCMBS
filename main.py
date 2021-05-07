@@ -6,6 +6,8 @@ from flask import Flask, flash, request, redirect, url_for, send_from_directory,
 from werkzeug.utils import secure_filename
 
 from werkzeug.middleware.shared_data import SharedDataMiddleware
+from flask_qrcode import QRcode
+
 #
 UPLOAD_FOLDER = ''
 
@@ -16,8 +18,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Log habilitad!")
 
-
-
+QRcode(app)
 
 
 def guardarActividades():
@@ -38,13 +39,13 @@ def error():
     return render_template("Error.html")
 
 
-
-
-
-
+@app.route('/testQR')
+def testQR():
+    resp = "aa"
+    return render_template("qr.html", qr=resp) 
 
 @app.route('/', methods=['GET', 'POST'])
-def upload_file():
+def main():
     #guardarActividades()
     if request.method == 'POST':
         # datos usuario
@@ -91,7 +92,7 @@ def upload_file():
         logging.debug(resp)
 
 
-        return render_template("qr.html", qr=resp) 
+        return render_template('qr.html', qr=resp, nombre=nombre,fecha=fecha,edificio=edificio, sede=sede,hora=hora)
 
 
 
