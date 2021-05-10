@@ -1,369 +1,165 @@
-<!doctype html>
-<hmtl lang ="es">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
-        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% extends 'base.html' %}
 
-        <link href="{{ url_for('static',filename='styles/styles.css') }}" rel="stylesheet" type="text/css">
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-            
-        </script>
-        <!-- <link rel="stylesheet" href="styles.css" /> -->
-    </head>
-    <body>
-        <section class="container">            
-            <form method=post enctype=multipart/form-data>
-                <!-- Header -->
-                <header class="col-md-12" data-aos="zoom-in" data-aos-duration="500">
-                    <h1 class="text-center" tabindex="0">Solicitud de turnos UNSADA</h1>
+{% block title %} Solicitud de turnos UNSADA {% endblock %}
+{% block content %}
+<form method=post enctype=multipart/form-data>
+    <!-- Header -->
+    <header class="col-md-12" data-aos="zoom-in" data-aos-duration="500">
+        <h1 class="text-center" tabindex="0">Solicitud de turnos UNSADA</h1>
 
-                </header>
-                <hr />
+    </header>
+    <hr />
 
-                <!-- Inicio Encuesta -->
-                <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
-                    <h3>Datos personales</h3>
-                    <label  id="nombre-apellido" class="label-datos" for="nombre-apellido-input">Nombre y Apellido * </label>
-                    <input name="nombre-apellido-input" id="nombre-apellido-input"value="" type="text" class="form-control col-md-6 input-datos-personales"id="edadEncuestado" required placeholder="Nombre" />
-                    <br/>
-                    <label id="dni" class="label-datos" for="dni-input">DNI, Pasaporte o cédula de identidad * </label>
-                    <input name="dni-input" id="dni-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="DNI, Pasaporte o cédula de identidad " />
-                    <br/>
-                    <label id="email" class="label-datos" for="email-input">Correo electrónico * </label>
-                    <input name="email-input" id="email-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="Correo electrónico" />
-                    <br/>
-                    <label id="direccion" class="label-datos" for="direccion-input">Dirección *</label>
-                    <input name="direccion-input" id="direccion-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="Dirección" />
-                    <br/>
-                    <label id="tel" class="label-datos" for="tel-input">Número de contacto </label>
-                    <input name="tel-input" id="tel-input" value="" type="text" class="form-control col-md-6 input-datos-personales" placeholder="Número de contacto" />
-                </section>
-                <hr />
-                <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
-                    <h3>Datos asistencia</h3>
-                    <label class="label-datos" >Sede: *</label>
-                    <fieldset class="col-md-6">
-                        <select class="form-control"  onchange="actualizarEdificiosYActividadesEnSede();" name="sede" id="sede" required>
-                            <option disabled selected>Seleccione una opción </option>
-                        </select>
-                    </fieldset>
-                    <br/>
-                    <label class="label-datos" >Fecha: *</label>
-                    <input name="fecha-input" id="fecha-input" value="" type="date" class="form-control col-md-6 input-datos-personales" onchange="actualizarEdificiosYActividadesEnSede();" required placeholder="Fecha" />
-                    <br/>
-                    <label class="label-datos" >Edificio: *</label>
-                    <fieldset class="col-md-6">
-                        <select class="form-control" onchange="ActualizarActividadesPorEdificio();" name="edificio" id="edificio" required>
-                            <option disabled selected>Seleccione una opción </option>
-                        </select>
-                    </fieldset>
-                    <br/>
-                    <label class="label-datos" >Actividad: *</label>
-                    <fieldset class="col-md-6">
-                        <select class="form-control" onchange="actualizarEdificiosPorActividad();" name="actividad" id="actividad" required>
-                            <option disabled selected>Seleccione una opción </option>
-                        </select>
-                    </fieldset>
-                    <br/>
-                    <label class="label-datos" >Horario: *</label>
-                    <fieldset class="col-md-6">
-                        <select class="form-control" onchange="" name="horarioActividad" id="horarioActividad" required>
-                            <option disabled selected>Seleccione una opción </option>
-                        </select>
-                    </fieldset>
-                </section>
-                <hr/>
-                <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
-                    <h3>Autoevaluación COVID-19</h3>
-                    <fieldset class="row" required>
-                        <p class="col-md-6">¿Percibiste una marcada pérdida del olfato de manera repentina?</p>
-                        <label class="col-md-1" for="pregunta1a"> <input value="1" type="radio" name="olfato" id="pregunta1a" /> Si </label>
-                        <label class="col-md-1" for="pregunta1b"> <input value="0" type="radio" name="olfato" id="pregunta1b" /> No </label>
-                    </fieldset>
-                    <br/>
-                    <fieldset class="row" required>
-                        <p class="col-md-6">¿Percibiste una marcada pérdida del gusto de manera repentina?</p>
-                        <label class="col-md-1" for="pregunta2a"> <input value="1" type="radio" name="gusto" id="pregunta2a" /> Si </label>
-                        <label class="col-md-1" for="pregunta2b"> <input value="0" type="radio" name="gusto" id="pregunta2b" /> No </label>
-                    </fieldset>
-                    <br/>
-                    <fieldset class="row" required>
-                        <p class="col-md-6">¿Tenés tos?</p>
-                        <label class="col-md-1" for="pregunta3a"> <input value="1" type="radio" name="tos" id="pregunta3a" /> Si </label>
-                        <label class="col-md-1" for="pregunta3b"> <input value="0" type="radio" name="tos" id="pregunta3b" /> No </label>
-                    </fieldset>
-                    <br/>
-                    <fieldset class="row" required>
-                        <p class="col-md-6">¿Tenés dolor de garganta?</p>
-                        <label class="col-md-1" for="pregunta4a"> <input value="1" type="radio" name="garganta" id="pregunta4a" /> Si </label>
-                        <label class="col-md-1" for="pregunta4b"> <input value="0" type="radio" name="garganta" id="pregunta4b" /> No </label>
-                    </fieldset>
-                    <br/>
-                    <fieldset class="row" required>
-                        <p class="col-md-6">¿Tenés dificultad respiratoria o falta de aire?</p>
-                        <label class="col-md-1" for="pregunta5a"> <input value="1" type="radio" name="aire" id="pregunta5a" /> Si </label>
-                        <label class="col-md-1" for="pregunta5b"> <input value="0" type="radio" name="aire" id="pregunta5b" /> No </label>
-                    </fieldset>
-                    <br/>
-                    <br/>
-                    <h5 id="declaracion-jurada-label">Si tu situación de salud contempla alguna de las siguientes opciones, marque las que correspondan:</h5>
-                    <br/>
-                    <div class="form-check" required>
-                        <input name="emabarazadaCheck" class="form-check-input" type="checkbox" value="emabarazadaCheck" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">Estoy embarazada</label>
-                    </div>
-                    <br/>
-                    <div class="form-check">
-                        <input name="cancerCheck" class="form-check-input" type="checkbox" value="cancerCheck" id="defaultCheck2">
-                        <label class="form-check-label" for="defaultCheck2">Tengo/tuve cáncer</label>
-                    </div>
-                    <br/>
-                    <div class="form-check">
-                        <input name="diabetesCheck" class="form-check-input" type="checkbox" value="diabetesCheck" id="defaultCheck3">
-                        <label class="form-check-label" for="defaultCheck3">Tengo diabetes</label>
-                    </div>
-                    <br/>
-                    <div class="form-check">
-                        <input name="hepaticaCheck" class="form-check-input" type="checkbox" value="hepaticaCheck" id="defaultCheck4">
-                        <label class="form-check-label" for="defaultCheck4">Tengo alguna enfermedad hepática</label>
-                    </div>
-                    <br/>
-                    <div class="form-check">
-                        <input name="renalCheck" class="form-check-input" type="checkbox" value="renalCheck" id="defaultCheck5">
-                        <label class="form-check-label" for="defaultCheck5">Tengo alguna enfermedad renal crónica</label>
-                    </div>
-                    <br/>
-                    <div class="form-check">
-                        <input name="respiratoriaCheck" class="form-check-input" type="checkbox" value="respiratoriaCheck" id="defaultCheck6">
-                        <label class="form-check-label" for="defaultCheck6">Tengo alguna enfermedad respiratoria</label>
-                    </div>
-                    <br/>
-                    <div class="form-check">
-                        <input name="cardiologicaCheck" class="form-check-input" type="checkbox" value="cardiologicaCheck" id="defaultCheck7">
-                        <label class="form-check-label" for="defaultCheck7">Tengo alguna enfermedad cardiológica</label>
-                    </div>
-                    <br/>
-                    <br/>
-                    <p class="col-md-8">* recuerde que la presentación de este formulario tiene caracter de declaración jurada.</p>
-                </section>
-                <hr/>
-                <section>
+    <!-- Inicio Encuesta -->
+    <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
+        <h3>Datos personales</h3>
+        <label  id="nombre-apellido" class="label-datos" for="nombre-apellido-input">Nombre y Apellido * </label>
+        <input name="nombre-apellido-input" id="nombre-apellido-input"value="" type="text" class="form-control col-md-6 input-datos-personales"id="edadEncuestado" required placeholder="Nombre" />
+        <br/>
+        <label id="dni" class="label-datos" for="dni-input">DNI, Pasaporte o cédula de identidad * </label>
+        <input name="dni-input" id="dni-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="DNI, Pasaporte o cédula de identidad " />
+        <br/>
+        <label id="email" class="label-datos" for="email-input">Correo electrónico * </label>
+        <input name="email-input" id="email-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="Correo electrónico" />
+        <br/>
+        <label id="direccion" class="label-datos" for="direccion-input">Dirección *</label>
+        <input name="direccion-input" id="direccion-input" value="" type="text" class="form-control col-md-6 input-datos-personales" required placeholder="Dirección" />
+        <br/>
+        <label id="tel" class="label-datos" for="tel-input">Número de contacto </label>
+        <input name="tel-input" id="tel-input" value="" type="text" class="form-control col-md-6 input-datos-personales" placeholder="Número de contacto" />
+    </section>
+    <hr />
+    <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
+        <h3>Datos asistencia</h3>
+        <label class="label-datos" >Sede: *</label>
+        <fieldset class="col-md-6">
+            <select class="form-control"  onchange="cambioSede();" name="sede" id="sede" required>
+                <option disabled selected>Seleccione una opción </option>
+            </select>
+        </fieldset>
+        <br/>
+        <label class="label-datos" >Fecha: *</label>
+        <input name="fecha-input" id="fecha-input" value="" type="date" class="form-control col-md-6 input-datos-personales" onchange="cambioFecha();" required placeholder="Fecha" />
+        <br/>
+        <label class="label-datos" >Edificio: *</label>
+        <fieldset class="col-md-6">
+            <select class="form-control" onchange="cambioEdificio();" name="edificio" id="edificio" required>
+                <option disabled selected>Seleccione una opción </option>
+            </select>
+        </fieldset>
+        </br>
+        <label class="label-datos" >Dependencia: *</label>
+        <fieldset class="col-md-6">
+            <select class="form-control" onchange="cambioDependencia();" name="dependencia" id="dependencia" required>
+                <option disabled selected>Seleccione una opción </option>
+            </select>
+        </fieldset>
+        <br/>
+        <label class="label-datos" >Propuesta: *</label>
+        <fieldset class="col-md-6">
+            <select class="form-control" onchange="cambioPropuesta();" name="propuesta" id="propuesta" required>
+                <option disabled selected>Seleccione una opción </option>
+            </select>
+        </fieldset>
+        <br/>
+        <label class="label-datos" >Actividad: *</label>
+        <fieldset class="col-md-6">
+            <select class="form-control" onchange="cambioActividad();" name="actividad" id="actividad" required>
+                <option disabled selected>Seleccione una opción </option>
+            </select>
+        </fieldset>
+        <br/>
+        <label class="label-datos" >Horario: *</label>
+        <fieldset class="col-md-6">
+            <select class="form-control" onchange="cambioHorario();" name="horarioActividad" id="horarioActividad" required>
+                <option disabled selected>Seleccione una opción </option>
+            </select>
+        </fieldset>
+    </section>
+    <hr/>
+    <section class="seccion-container" data-aos="fade-right" data-aos-duration="750" data-aos-easing="ease-in-out">
+        <h3>Autoevaluación COVID-19</h3>
+        <fieldset class="row" required>
+            <p class="col-md-6">¿Percibiste una marcada pérdida del olfato de manera repentina?</p>
+            <label class="col-md-1" for="pregunta1a"> <input value="1" type="radio" name="olfato" id="pregunta1a" /> Si </label>
+            <label class="col-md-1" for="pregunta1b"> <input value="0" type="radio" name="olfato" id="pregunta1b" /> No </label>
+        </fieldset>
+        <br/>
+        <fieldset class="row" required>
+            <p class="col-md-6">¿Percibiste una marcada pérdida del gusto de manera repentina?</p>
+            <label class="col-md-1" for="pregunta2a"> <input value="1" type="radio" name="gusto" id="pregunta2a" /> Si </label>
+            <label class="col-md-1" for="pregunta2b"> <input value="0" type="radio" name="gusto" id="pregunta2b" /> No </label>
+        </fieldset>
+        <br/>
+        <fieldset class="row" required>
+            <p class="col-md-6">¿Tenés tos?</p>
+            <label class="col-md-1" for="pregunta3a"> <input value="1" type="radio" name="tos" id="pregunta3a" /> Si </label>
+            <label class="col-md-1" for="pregunta3b"> <input value="0" type="radio" name="tos" id="pregunta3b" /> No </label>
+        </fieldset>
+        <br/>
+        <fieldset class="row" required>
+            <p class="col-md-6">¿Tenés dolor de garganta?</p>
+            <label class="col-md-1" for="pregunta4a"> <input value="1" type="radio" name="garganta" id="pregunta4a" /> Si </label>
+            <label class="col-md-1" for="pregunta4b"> <input value="0" type="radio" name="garganta" id="pregunta4b" /> No </label>
+        </fieldset>
+        <br/>
+        <fieldset class="row" required>
+            <p class="col-md-6">¿Tenés dificultad respiratoria o falta de aire?</p>
+            <label class="col-md-1" for="pregunta5a"> <input value="1" type="radio" name="aire" id="pregunta5a" /> Si </label>
+            <label class="col-md-1" for="pregunta5b"> <input value="0" type="radio" name="aire" id="pregunta5b" /> No </label>
+        </fieldset>
+        <br/>
+        <br/>
+        <h5 id="declaracion-jurada-label">Si tu situación de salud contempla alguna de las siguientes opciones, marque las que correspondan:</h5>
+        <br/>
+        <div class="form-check" required>
+            <input name="emabarazadaCheck" class="form-check-input" type="checkbox" value="emabarazadaCheck" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">Estoy embarazada</label>
+        </div>
+        <br/>
+        <div class="form-check">
+            <input name="cancerCheck" class="form-check-input" type="checkbox" value="cancerCheck" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">Tengo/tuve cáncer</label>
+        </div>
+        <br/>
+        <div class="form-check">
+            <input name="diabetesCheck" class="form-check-input" type="checkbox" value="diabetesCheck" id="defaultCheck3">
+            <label class="form-check-label" for="defaultCheck3">Tengo diabetes</label>
+        </div>
+        <br/>
+        <div class="form-check">
+            <input name="hepaticaCheck" class="form-check-input" type="checkbox" value="hepaticaCheck" id="defaultCheck4">
+            <label class="form-check-label" for="defaultCheck4">Tengo alguna enfermedad hepática</label>
+        </div>
+        <br/>
+        <div class="form-check">
+            <input name="renalCheck" class="form-check-input" type="checkbox" value="renalCheck" id="defaultCheck5">
+            <label class="form-check-label" for="defaultCheck5">Tengo alguna enfermedad renal crónica</label>
+        </div>
+        <br/>
+        <div class="form-check">
+            <input name="respiratoriaCheck" class="form-check-input" type="checkbox" value="respiratoriaCheck" id="defaultCheck6">
+            <label class="form-check-label" for="defaultCheck6">Tengo alguna enfermedad respiratoria</label>
+        </div>
+        <br/>
+        <div class="form-check">
+            <input name="cardiologicaCheck" class="form-check-input" type="checkbox" value="cardiologicaCheck" id="defaultCheck7">
+            <label class="form-check-label" for="defaultCheck7">Tengo alguna enfermedad cardiológica</label>
+        </div>
+        <br/>
+        <br/>
+        <p class="col-md-8">* recuerde que la presentación de este formulario tiene caracter de declaración jurada.</p>
+    </section>
+    <hr/>
+    <section>
 
-                    <input class="btn btn-primary btn-lg" type=submit value=Upload>
+        <input class="btn btn-primary btn-lg" type=submit value=Upload>
 
-                </section>
-            </form>
-        </section>
-        
-    </body>
-    <footer>
-        <script>
-            datos = httpGet("http://areco.gob.ar:9528/api/sede/all")
-
-            function httpGet(theUrl)
-            {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-                xmlHttp.send( null );
-                var content = JSON.parse(xmlHttp.responseText);
-                console.log(content);
-                return content;
-            }
-
-            function agregarOpcionSeleccionarVacio(nombre, value, selectID){
-                var nuevaOpcion = new Option(nombre, value);
-
-                nuevaOpcion.setAttribute("disabled", true);
-                nuevaOpcion.setAttribute("selected", true);
-
-                $(nuevaOpcion).html(nombre);
-
-                $(selectID).append(nuevaOpcion);
-                
-            }
-
-            function actualizarOpcionesNombre(opcion, i, id,idBDD, nombre =""){
-                var nombreNuevaOpcion = nombre;
-                if(nombreNuevaOpcion == "")
-                    nombreNuevaOpcion = opcion[i]["nombre"];
-
-                var nuevaOpcion = new Option(nombreNuevaOpcion, idBDD.toString());
-
-                // para armar el "path"
-                nuevaOpcion.setAttribute("id",i);
-
-                $(nuevaOpcion).html(nombreNuevaOpcion);
-
-                $(id).append(nuevaOpcion);
-
-            }
-
-            function aux(opcion, i, id,idBDD, nombre =""){
-                var nombreNuevaOpcion = nombre;
-                if(nombreNuevaOpcion == "")
-                    nombreNuevaOpcion = opcion[i]["nombre"];
-
-                var nuevaOpcion = new Option(nombreNuevaOpcion, idBDD.toString());
-
-                // para armar el "path"
-                nuevaOpcion.setAttribute("id",idBDD);
-
-                $(nuevaOpcion).html(nombreNuevaOpcion);
-
-                $(id).append(nuevaOpcion);
-            }
-            
-            function actualizarEdificiosYActividadesEnSede(){
-                var selectBox = document.getElementById("sede");
-                var sedeNumero = selectBox.options[selectBox.selectedIndex].id;
-
-                if(sedes[sedeNumero]== void(0))
-                    return;
-
-                $('#edificio').children().remove().end();
-                $('#actividad').children().remove().end();
-                $('#horarioActividad').children().remove().end();
-                
-                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#horarioActividad");
-                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#actividad");
-                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#edificio");
-                
-                // recorro los edificios
-                edificios = sedes[sedeNumero]["edificios"];
-                
-
-                // actualizo los edificios
-                for(edificioNumero = 0; edificioNumero < edificios.length; edificioNumero++){
-                    aux(edificios, edificioNumero, "#edificio", edificios[edificioNumero]["idEdificio"]);
-                    aulas = edificios[edificioNumero]["aulas"];
-                    for(aulaNumero = 0; aulaNumero < aulas.length; aulaNumero++){
-                        actividades = aulas[aulaNumero]["actividads"];
-                        for(actividadNumero = 0; actividadNumero < actividades.length; actividadNumero++){
-                            if(controlFecha(actividades, actividadNumero))
-                                actualizarOpcionesNombre(actividades, actividadNumero, "#actividad", actividades[actividadNumero]["idActividad"]);
-                        
-                        }
-                        
-                    }
-                }
-            }
-
-            function actualizarHorariosActividad(horariosactividads){
-                console.log("Entró a actualizar horario");
-                for(i = 0; i < horariosactividads.length; i++){
-                    //actualizarOpcionesNombre(horariosactividads, i, "", )
-                    var nombreNuevaOpcion = horariosactividads[i]["horaInicio"];
-                    var nuevaOpcion = new Option(nombreNuevaOpcion, horariosactividads[i]["idHorarioActividad"].toString());
-
-                    console.log("nombre nueva opción");
-                    // para armar el "path"
-                    nuevaOpcion.setAttribute("id",i);
-
-                    $(nuevaOpcion).html(nombreNuevaOpcion);
-
-                    $("#horarioActividad").append(nuevaOpcion);
-                }
-            }
-
-            function actualizarEdificiosPorActividad(){
-                var selectBox = document.getElementById("actividad");
-                var actividadValue = selectBox.options[selectBox.selectedIndex].value;
-
-                //$('#edificio').children().remove().end(); 
-                // en el value yo guardo el id 
-                // en el id guardo el value
-                // en json: el id es unico pero el value es para el array
-
-                sedes = datos["data"];
-
-                //console.log("buscando");
-
-                // recorro las sedes 
-                for (sedeNumero = 0; sedeNumero < sedes.length; sedeNumero++){
-                    //console.log("sedeNombre:" + sedes[sedeNumero]["nombre"]);
-                    edificios = sedes[sedeNumero]["edificios"];
-                    
-                    // actualizo los edificios
-                    for(edificioNumero = 0; edificioNumero < edificios.length; edificioNumero++){
-                        //console.log("edificio:" + edificios[edificioNumero]["nombre"]);
-                        aulas = edificios[edificioNumero]["aulas"];
-                        // actualizo las uulas
-                        for(aulaNumero = 0; aulaNumero < aulas.length; aulaNumero++){
-                            actividades = aulas[aulaNumero]["actividads"];
-                            //console.log("aula:" + edificios[aulaNumero]["nombre"] + "-" + actividades.length);
-                            for(activadesNumero = 0; activadesNumero< actividades.length; activadesNumero++){
-                               // console.log("actividad:" + actividades[activadesNumero]["nombre"]);
-                               
-                                if(actividades[activadesNumero]["idActividad"] == actividadValue){
-                                    
-                                    console.log(actividades[activadesNumero]["nombre"] + " " + actividadValue);
-                                    //actualizarOpcionesNombre(edificios, edificioNumero, "#edificio", edificios[edificioNumero]["idEdificio"]);
-                                    for(i = 0; i < edificios.length; i++){
-                                        $("#edificio > option[id="+ edificios[i]["idEdificio"] +"]").attr("selected",false);
-                                    }
-
-                                    console.log(edificios[edificioNumero]["idEdificio"] + " edificio: " + edificios[edificioNumero]["nombre"]);
-                                    
-                                    $("#edificio > option[id="+ edificios[edificioNumero]["idEdificio"] +"]").attr("selected",true);
-
-                                    horariosactividads = actividades[activadesNumero]["horariosactividads"];
-                                    actualizarHorariosActividad(horariosactividads);
-                                    return;
-                                }
-                                else{
-                                    console.log(actividades[activadesNumero]["idActividad"] + " != " + actividadValue);
-                                }
-                            }
-                        }
-                    }
-                }
-                console.log("No se encontró ese");
-            }
-
-            function controlFecha(actividades, actividadNumero){
-                var fecha = document.getElementById("fecha-input");
-                fechaValue = fecha.value;
-                return (fechaValue == actividades[actividadNumero]["fechaInicio"]);
-            }
-
-            function ActualizarActividadesPorEdificio(){
-                var selectBox = document.getElementById("edificio");
-                var edificioNumero = selectBox.options[selectBox.selectedIndex].value;
-
-                $('#actividad').children().remove().end();
-                $('#horarioActividad').children().remove().end();
-                
-                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#horarioActividad");
-                agregarOpcionSeleccionarVacio("Seleccione una opción","-1", "#actividad");
-                // recorro los edificios
-               
-                aulas = edificios[edificioNumero]["aulas"];
-                for(aulaNumero = 0; aulaNumero < aulas.length; aulaNumero++){
-                    actividades = aulas[aulaNumero]["actividads"];
-                    for(actividadNumero = 0; actividadNumero < actividades.length; actividadNumero++){
-                        if(controlFecha(actividades, actividadNumero))
-                            actualizarOpcionesNombre(actividades, actividadNumero, "#actividad", actividades[actividadNumero]["idActividad"]);
-                    }
-                    
-                }
-            }
+    </section>
+</form>
 
 
-            function ActualizarSedes(){
+{% endblock %}
+{% block foot %}
 
-                sedes = datos["data"];
-
-                // recorro las sedes 
-                for (sedeNumero = 0; sedeNumero < sedes.length; sedeNumero++){
-                    // actualizo las sedes disponibles
-                    actualizarOpcionesNombre(sedes, sedeNumero, "#sede", sedes[sedeNumero]["idSede"]);
-                }
-                  
-            }
-
-            ActualizarSedes();
-        </script>
-    </footer>
-</hmtl> 
+{% endblock %}
