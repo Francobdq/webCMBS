@@ -21,17 +21,6 @@ logging.debug("Log habilitad!")
 QRcode(app)
 
 
-def guardarActividades():
-    logging.debug("guardando json")
-    response = requests.get(url=' http://areco.gob.ar:9528/api/actividad/all')
-    response_dict = response.json()
-
-    
-    print(response_dict['data'][0])
-    with open('data.json', 'w') as file:
-        json.dump(response_dict, file, indent=4)
-
-
 @app.route('/error', methods=['GET', 'POST'])
 def error():
     if request.method == 'POST':
@@ -39,60 +28,60 @@ def error():
     return render_template("Error.html")
 
 
-@app.route('/testQR')
-def testQR():
-    resp = "aa"
-    return render_template("qr.html", qr=resp) 
-
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    #guardarActividades()
     if request.method == 'POST':
         # datos usuario
-        nombre = request.form['nombre-apellido-input']
-        dni = request.form['dni-input']
-        email = request.form['email-input']
-        direccion = request.form['direccion-input']
-        tel = request.form['tel-input']
+        nombre = "franco bernaldo de quiros"#request.form['nombre-apellido-input']
+        #dni = request.form['dni-input']
+        #email = request.form['email-input']
+        #direccion = request.form['direccion-input']
+        #tel = request.form['tel-input']
         # datos de ingreso
-        sede = request.form.get('sede')
-        fecha = request.form['fecha-input']
-        edificio = request.form.get('edificio')
-        actividad = request.form.get('actividad')
-        horario = request.form['horarioActividad']
+        sede = "baradero" #request.form.get('sede')
+        fecha = "09/05/2021"#request.form['fecha-input']
+        edificio = "asd"#request.form.get('edificio')
+        actividad = "aa"#request.form.get('actividad')
+        hora = "20:20"#request.form['horarioActividad']
 
-        if(sede == None or edificio == None or actividad == None):
-            return redirect("/error")
+        #if(sede == None or edificio == None or actividad == None):
+            #return redirect("/error")
 
         # declaracion jurada 1era parte
-        olfato = request.form['olfato']
-        gusto = request.form['gusto']
-        tos = request.form['tos']
-        garganta = request.form['garganta']
-        aire = request.form['aire']
+        #olfato = request.form['olfato']
+        #gusto = request.form['gusto']
+        #tos = request.form['tos']
+        #garganta = request.form['garganta']
+        #aire = request.form['aire']
 
         # declaracion jurada 2da parte
-        embarazada = request.form.get('emabarazadaCheck')
-        cancer = request.form.get('cancerCheck')
-        diabetes = request.form.get('diabetesCheck')
-        hepatica = request.form.get('hepaticaCheck')
-        renal = request.form.get('renalCheck')
-        respiratoria = request.form.get('respiratoriaCheck')
-        cardiologica = request.form.get('cardiologicaCheck')
+        #embarazada = request.form.get('emabarazadaCheck')
+        #cancer = request.form.get('cancerCheck')
+        #diabetes = request.form.get('diabetesCheck')
+        #hepatica = request.form.get('hepaticaCheck')
+        #renal = request.form.get('renalCheck')
+        #respiratoria = request.form.get('respiratoriaCheck')
+        #cardiologica = request.form.get('cardiologicaCheck')
 
-        grupoDeRiesgo = 0
-        if (embarazada or cancer or diabetes or hepatica or renal or respiratoria or cardiologica):
-            grupoDeRiesgo = 1
+        #grupoDeRiesgo = 0
+        #if (embarazada or cancer or diabetes or hepatica or renal or respiratoria or cardiologica):
+        #    grupoDeRiesgo = 1
 
 
-        auth_data = {"dni": str(dni),"enSeguimiento": str(1),"grupoDeRiesgo": str(grupoDeRiesgo),"mail": str(email),"nombre": str(nombre),"telefono": str(tel)}
+        #auth_data = {"dni": str(dni),"enSeguimiento": str(1),"grupoDeRiesgo": str(grupoDeRiesgo),"mail": str(email),"nombre": str(nombre),"telefono": str(tel)}
         
-        resp = requests.post('http://areco.gob.ar:9528/api/ingresante/create/'+str(horario)+'/?fechaingreso='+str(fecha), json=auth_data)
+        #resp = requests.post('http://areco.gob.ar:9528/api/ingresante/create/'+str(horario)+'/?fechaingreso='+str(fecha), json=auth_data)
 
-        logging.debug(resp)
+        #logging.debug(resp)
 
+        qr = "10231081249123"
 
-        return render_template('qr.html', qr=resp, nombre=nombre,fecha=fecha,edificio=edificio, sede=sede,hora=hora)
+        #response = requests.get(url=' http://areco.gob.ar:9528/api/persona/find/1')
+        #persona = response.json()["data"]
+        #qr = persona["ddjjs"][-1]["solicituds"][-1]["qr"]
+        aula = "aula1"
+
+        return render_template('qr.html', qr=qr, nombre=nombre,fecha=fecha,edificio=edificio, sede=sede,hora=hora, aula=aula)
 
 
 
